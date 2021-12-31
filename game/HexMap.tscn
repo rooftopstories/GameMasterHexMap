@@ -7,4 +7,4 @@
 script = ExtResource( 2 )
 
 [node name="main_camera" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939693, 0.34202, 0, 7, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 7, 0 )
