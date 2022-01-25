@@ -36,33 +36,36 @@ func calc_move(m_pos, delta):
 var _previousPosition: Vector2 = Vector2(0, 0)
 var _moveCamera: bool = false
 
-func _unhandled_input(event: InputEvent):	
-	if event is InputEventMouseButton && event.button_index == BUTTON_LEFT:
-		# LEFT Mouse Click
-		# get_tree().set_input_as_handled();
-		if event.is_pressed():
-			_previousPosition = event.position
-			_moveCamera = true
-		else:
-			_moveCamera = false
+func _unhandled_input(event: InputEvent):
+	var options = get_node("/root/options")
+	if options.mode == 'map':
+		if event is InputEventMouseButton && event.button_index == BUTTON_LEFT:
+			# LEFT Mouse Click
+			# get_tree().set_input_as_handled();
+			if event.is_pressed():
+				_previousPosition = event.position
+				_moveCamera = true
+			else:
+				_moveCamera = false
+				
+		elif event is InputEventMouseMotion && _moveCamera:
+			# LEFT Mouse Drag
+			get_tree().set_input_as_handled()
+			# position += (_previousPosition - event.position);
+			var new_position:Vector2 = (_previousPosition - event.position)
 			
-	elif event is InputEventMouseMotion && _moveCamera:
-		# LEFT Mouse Drag
-		get_tree().set_input_as_handled()
-		# position += (_previousPosition - event.position);
-		var new_position:Vector2 = (_previousPosition - event.position)
-		
-		global_translate(Vector3(new_position.x, 0, new_position.y) * 0.03)
-		
-		_previousPosition = event.position
+			var position_vector:Vector3 = Vector3(new_position.x, 0, new_position.y) * 0.03
+			get_parent().get_child(0).update_position(position_vector)
+			global_translate(position_vector)
+			_previousPosition = event.position
 
-	elif event is InputEventMouseButton && event.button_index == BUTTON_WHEEL_UP:
-		# MOUSE WHEEL UP
-		var zoom_pos = event.position
-		print('wheel up')
-		global_translate(Vector3(0, -1, 0))
-	elif event is InputEventMouseButton && event.button_index == BUTTON_WHEEL_DOWN:
-		# MOUSE WHEEL DOWN
-		var zoom_pos = event.position
-		print('wheel down')
-		global_translate(Vector3(0, 1, 0))
+		elif event is InputEventMouseButton && event.button_index == BUTTON_WHEEL_UP:
+			# MOUSE WHEEL UP
+			var zoom_pos = event.position
+			print('wheel up')
+			global_translate(Vector3(0, -1, 0))
+		elif event is InputEventMouseButton && event.button_index == BUTTON_WHEEL_DOWN:
+			# MOUSE WHEEL DOWN
+			var zoom_pos = event.position
+			print('wheel down')
+			global_translate(Vector3(0, 1, 0))

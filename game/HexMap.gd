@@ -45,3 +45,13 @@ func calc_world_pos(var grid_pos : Vector2):
 
 func get_camera():
 	return $main_camera
+
+func _on_chk_drawmode_pressed():
+	var options = get_node("/root/options")
+	match options.mode:
+		'map':
+			options.mode = 'draw'
+		'draw':
+			options.mode = 'map'
+	
+	print(options.mode)

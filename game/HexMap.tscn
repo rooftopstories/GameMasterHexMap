@@ -1,10 +1,25 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://world/camera/main_camera.tscn" type="PackedScene" id=1]
 [ext_resource path="res://HexMap.gd" type="Script" id=2]
+[ext_resource path="res://drawing/drawing.tscn" type="PackedScene" id=3]
 
 [node name="HexMap" type="Spatial"]
 script = ExtResource( 2 )
+grid_w = 5
+grid_h = 5
+
+[node name="drawing" parent="." instance=ExtResource( 3 )]
+
+[node name="chk_drawmode" type="CheckButton" parent="."]
+margin_right = 76.0
+margin_bottom = 40.0
+text = "Draw"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="main_camera" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 7, 0 )
+
+[connection signal="pressed" from="chk_drawmode" to="." method="_on_chk_drawmode_pressed"]

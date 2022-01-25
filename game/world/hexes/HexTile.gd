@@ -3,7 +3,6 @@ extends RigidBody
 var current_object = null
 onready var center_point = global_transform.origin
 
-var current_edit_options:EditOptions = EditOptions.new()
 var current_placement:Placement = Placement.new(self)
 
 var player = null
@@ -21,21 +20,23 @@ func interact(interaction):
 	return interaction
 
 func _on_HexTile_input_event(camera, event, click_position, click_normal, shape_idx):
-	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed == true:
-			print("Hex Left Mouse Button")
-		if event.button_index == BUTTON_LEFT and event.pressed == false:
-			print("Hex Left Mouse Button Release")
-		if event.button_index == BUTTON_RIGHT and event.pressed == true:
-			print("Hex Pressed Right Mouse Button")
-		if event.button_index == BUTTON_RIGHT and event.pressed == false:
-			print("Hex Right Mouse Button Release")
-		if event.button_index == BUTTON_MIDDLE and event.pressed == true:
-			print("Hex Pressed Middle Mouse Button")
-		if event.button_index == BUTTON_MIDDLE and event.pressed == false:
-			print("Hex Middle Mouse Button Release")
-		if event.button_index == BUTTON_LEFT and event.doubleclick == true:
-			print("Hex Left Mouse Button Double Clicked")
+	var options = get_node("/root/options")
+	if options.mode == 'draw':
+		if event is InputEventMouseButton:
+			if event.button_index == BUTTON_LEFT and event.pressed == true:
+				print("Hex Left Mouse Button")
+			if event.button_index == BUTTON_LEFT and event.pressed == false:
+				print("Hex Left Mouse Button Release")
+			if event.button_index == BUTTON_RIGHT and event.pressed == true:
+				print("Hex Pressed Right Mouse Button")
+			if event.button_index == BUTTON_RIGHT and event.pressed == false:
+				print("Hex Right Mouse Button Release")
+			if event.button_index == BUTTON_MIDDLE and event.pressed == true:
+				print("Hex Pressed Middle Mouse Button")
+			if event.button_index == BUTTON_MIDDLE and event.pressed == false:
+				print("Hex Middle Mouse Button Release")
+			if event.button_index == BUTTON_LEFT and event.doubleclick == true:
+				print("Hex Left Mouse Button Double Clicked")
 
 func remove_player(player):
 	remove_child(player)
@@ -108,26 +109,6 @@ func show_object(show):
 			current_object.show()
 		else:
 			current_object.hide()
-
-class EditOptions:
-	var max_height_steps:int = 5
-	var min_height_steps:int = 0
-	var current_height_step:int = 0
-	var step_height:float = 0.25
-	
-	func is_growable(direction):
-		match direction:
-			'up':
-				return current_height_step + 1 <= max_height_steps
-			'down':
-				return current_height_step - 1 >= min_height_steps
-	
-	func get_step_height(direction):
-		match direction:
-			'up':
-				return step_height
-			'down':
-				return -step_height
 
 class Placement:
 	var current_tile:RigidBody = null
